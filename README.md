@@ -36,5 +36,5 @@ Note that the linked API response above has `maybelline` hardcoded; your applica
 
 ## Stretch Goals
 1. Add Crashlytics crash reporting to your app
-2. Add Firebase instrumentation to your app to track user interactions. You can use the following command in a terminal/command prompt to force uploads: `adb shell setprop debug.firebase.analytics.app <packagename>`
+2. Add Firebase instrumentation to your app to track user interactions. You can use the following command in a terminal/command prompt to force uploads: `adb shell setprop debug.firebase.analytics.app <packagename>` (Turn it off with `adb shell setprop debug.firebase.analytics.app .none.`)
 3. Add a `CompositeDisposable` to your Activity, and add the Rx Disposable to it. Clear the `CompositeDisposable` when your Activity is destroyed.  
