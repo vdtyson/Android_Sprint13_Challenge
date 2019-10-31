@@ -28,7 +28,7 @@ Note that the linked API response above has `maybelline` hardcoded; your applica
 
 ## Requirements
 1. Build a model that defines the 4 required fields in the description above
-2. Build a Service Wrapper that uses Retrofit to Query the makeup API (hint: use the `@Query` annotation in your Retrofit definition)
+2. Build a Service Wrapper that uses Retrofit to Query the makeup API (hint: use the `@Query` annotation in your Retrofit definition). The Service Wrapper is the interface you'll define for making call(s) to the Makeup API (IE: `MakeupService`)
 3. Your Service Wrapper from Requirement 2 should use RxJava and return an `Observable<List<>>`
 4. Use Dagger 2 to make your Service Wrapper Injectable
 5. Build a simple Activity for searching the API and presenting the results in a `RecyclerView`
