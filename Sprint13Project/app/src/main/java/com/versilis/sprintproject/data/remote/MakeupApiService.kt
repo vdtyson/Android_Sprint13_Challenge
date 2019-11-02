@@ -10,19 +10,17 @@ import retrofit2.http.Query
 
 interface MakeupApiService {
 
-   @GET("/products.json")
+   @GET("products.json")
     fun getProductsByBrand(@Query("brand") brand: String) : Observable<List<Makeup>>
 
-    companion object Factory {
+}
 
-        fun create(): MakeupApiService {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(MakeupApiConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
+class MakeupApiProvider {
+    val retrofit = Retrofit.Builder()
+        .baseUrl("http://makeup-api.herokuapp.com/api/v1/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        .build()
 
-           return retrofit.create(MakeupApiService::class.java)
-        }
-    }
+    fun getMakeupService(): MakeupApiService = retrofit.create(MakeupApiService::class.java)
 }
