@@ -2,13 +2,13 @@ package com.versilis.sprintproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.EditText
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.versilis.sprintproject.MainApplication
 import com.versilis.sprintproject.R
 import com.versilis.sprintproject.data.local.model.Makeup
 import com.versilis.sprintproject.data.remote.MakeupApiProvider
 import com.versilis.sprintproject.data.remote.MakeupApiService
+import com.versilis.sprintproject.di.DaggerMakeupNetworkComponent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -19,19 +19,23 @@ class MakeupListActivity : AppCompatActivity() {
 
     private var disposable: Disposable? = null
     @Inject
-    lateinit var service: MakeupApiService
+    lateinit var makeupApiService: MakeupApiService
     val makeupList = listOf<Makeup>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_makeup_list)
+
+        // Still haven't been able to get dagger to work.
+        makeupApiService = MakeupApiProvider().getMakeupService()
+        (application as MainApplication).networkComponent.inject(this)
         val adapter = MakeupRecyclerAdapter(makeupList)
         initRV( adapter)
         bttn_submit_query.setOnClickListener {
             if (!et_search.text.isNullOrEmpty()) {
                val brandNameQueryText = et_search.text.toString()
-                getMakeupProductsByBrandName(brandNameQueryText, adapter)
+               getMakeupProductsByBrandName(brandNameQueryText, adapter, makeupApiService)
             }
         }
 
@@ -41,7 +45,7 @@ class MakeupListActivity : AppCompatActivity() {
         disposable?.dispose()
         super.onPause()
     }
-    private fun getMakeupProductsByBrandName(brandName: String, adapter: MakeupRecyclerAdapter) {
+    private fun getMakeupProductsByBrandName(brandName: String, adapter: MakeupRecyclerAdapter, service: MakeupApiService) {
         disposable = service.getProductsByBrand(brandName)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
