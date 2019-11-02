@@ -27,8 +27,6 @@ class MakeupListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_makeup_list)
 
-        // Still haven't been able to get dagger to work.
-        makeupApiService = MakeupApiProvider().getMakeupService()
         (application as MainApplication).networkComponent.inject(this)
         val adapter = MakeupRecyclerAdapter(makeupList)
         initRV( adapter)
